@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 import i18n from "@/core/i18n";
+import currencyStore from "@/core/store/currencyStore";
+import { SAR_GLYPH } from "@/core/constants/currencies";
 
 /**
  * Generic, domain-agnostic formatting. Anything that knows what a Subscription
@@ -8,30 +10,58 @@ import i18n from "@/core/i18n";
 
 const numberFormatLocale = () => (i18n.language === "ar" ? "ar-EG" : "en-US");
 
-export const formatCurrency = (value: number, currency = "USD"): string => {
+/**
+ * Saudi Riyal is formatted with its ISO code so Intl still decides placement
+ * and bidi marks for the locale, then the code is swapped for the new sign —
+ * render the result through `MoneyText` so the sign gets its font.
+ */
+const formatMoney = (
+  value: number,
+  currency: string,
+  fractionDigits: number,
+): string => {
+  const isRiyal = currency === "SAR";
   try {
-    return new Intl.NumberFormat(numberFormatLocale(), {
+    const text = new Intl.NumberFormat(numberFormatLocale(), {
       style: "currency",
       currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      currencyDisplay: isRiyal ? "code" : "symbol",
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
     }).format(value);
+    return isRiyal ? text.replace(/SAR|ر\.س\.?/, SAR_GLYPH) : text;
   } catch {
-    return value.toFixed(2);
+    const plain = value.toFixed(fractionDigits);
+    return isRiyal ? `${SAR_GLYPH} ${plain}` : plain;
   }
 };
 
+export const formatCurrency = (
+  value: number,
+  currency: string = currencyStore.getState().currency,
+): string => formatMoney(value, currency, 2);
+
 /** Money without the cents, for tight spots: chart axes, tiles, list rows. */
-export const formatCurrencyShort = (value: number, currency = "USD"): string => {
+export const formatCurrencyShort = (
+  value: number,
+  currency: string = currencyStore.getState().currency,
+): string => formatMoney(value, currency, 0);
+
+/** The bare sign ("$", "€", the riyal glyph) for badges and input adornments. */
+export const getCurrencySymbol = (currency: string): string => {
+  if (currency === "SAR") return SAR_GLYPH;
   try {
-    return new Intl.NumberFormat(numberFormatLocale(), {
-      style: "currency",
-      currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
+    return (
+      new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency,
+        currencyDisplay: "narrowSymbol",
+      })
+        .formatToParts(0)
+        .find((part) => part.type === "currency")?.value ?? currency
+    );
   } catch {
-    return String(Math.round(value));
+    return currency;
   }
 };
 

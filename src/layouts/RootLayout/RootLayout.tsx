@@ -9,6 +9,8 @@ import { useFonts } from "expo-font";
 import { PostHogProvider } from "posthog-react-native";
 import { posthog } from "@/core/services/posthog";
 import { initI18n } from "@/core/i18n";
+import currencyStore from "@/core/store/currencyStore";
+import { SAR_FONT_FAMILY } from "@/core/constants/currencies";
 import useAuthSession from "@/core/hooks/useAuthSession";
 import LocalizationProvider from "@/core/components/Localization/LocalizationProvider";
 import GlobalFeedbackRenderer from "@/core/components/Feedback/GlobalFeedbackRenderer";
@@ -72,12 +74,16 @@ const RootLayout = () => {
     // IBM Plex Sans Arabic has no ExtraBold static weight — Bold is the closest.
     "sans-extrabold-ar": require("@/assets/fonts/IBMPlexSansArabic-Bold.ttf"),
     "sans-light-ar": require("@/assets/fonts/IBMPlexSansArabic-Light.ttf"),
+    // Converted from the web build's sar_shopvert.woff — native needs TTF.
+    [SAR_FONT_FAMILY]: require("@/assets/fonts/SaudiRiyal.ttf"),
   });
 
   const [i18nReady, setI18nReady] = useState(false);
 
   useEffect(() => {
-    initI18n().finally(() => setI18nReady(true));
+    Promise.all([initI18n(), currencyStore.init()]).finally(() =>
+      setI18nReady(true),
+    );
   }, []);
 
   if (!fontsLoaded || !i18nReady) return null;

@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { iconTint } from "@/core/constants/icons";
 import { colors } from "@/core/theme/tokens";
 import EmptyState from "@/core/components/Feedback/EmptyState";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrencyShort } from "@/core/utils/formatters";
 import type { SubscriptionCost } from "@/features/Insights/utils/insightsCalculations";
 
@@ -19,6 +21,7 @@ export type SubscriptionCostListProps = {
  */
 const SubscriptionCostList = ({ costs }: SubscriptionCostListProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
 
   if (!costs.length) {
     return (
@@ -46,9 +49,9 @@ const SubscriptionCostList = ({ costs }: SubscriptionCostListProps) => {
               </Text>
             </View>
 
-            <Text className="breakdown-value" numberOfLines={1}>
-              {formatCurrencyShort(cost.annual)}
-            </Text>
+            <MoneyText className="breakdown-value" numberOfLines={1}>
+              {formatCurrencyShort(cost.annual, currency)}
+            </MoneyText>
           </View>
 
           <View className="breakdown-track">
@@ -61,13 +64,13 @@ const SubscriptionCostList = ({ costs }: SubscriptionCostListProps) => {
             />
           </View>
 
-          <Text className="breakdown-caption" numberOfLines={1}>
+          <MoneyText className="breakdown-caption" numberOfLines={1}>
             {t("dashboard.subscriptionCaption", {
-              monthly: formatCurrencyShort(cost.monthly),
+              monthly: formatCurrencyShort(cost.monthly, currency),
               share: Math.round(cost.share * 100),
               defaultValue: "{{monthly}}/mo · {{share}}% of your subscriptions",
             })}
-          </Text>
+          </MoneyText>
         </View>
       ))}
     </View>

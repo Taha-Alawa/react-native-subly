@@ -1,5 +1,7 @@
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrency } from "@/core/utils/formatters";
 
 export type BalanceCardProps = {
@@ -13,6 +15,7 @@ export type BalanceCardProps = {
  */
 const BalanceCard = ({ amount }: BalanceCardProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
 
   return (
     <View className="home-balance-card">
@@ -21,14 +24,14 @@ const BalanceCard = ({ amount }: BalanceCardProps) => {
       </Text>
 
       {/* Arabic-Indic numerals run much wider than Latin at this size. */}
-      <Text
+      <MoneyText
         className="home-balance-amount"
         numberOfLines={1}
         adjustsFontSizeToFit
         minimumFontScale={0.6}
       >
-        {formatCurrency(amount)}
-      </Text>
+        {formatCurrency(amount, currency)}
+      </MoneyText>
     </View>
   );
 };

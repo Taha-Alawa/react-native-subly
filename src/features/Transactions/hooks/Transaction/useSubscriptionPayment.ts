@@ -13,6 +13,7 @@ import TransactionService from "@/features/Transactions/services/TransactionServ
 import transactionCache from "@/features/Transactions/hooks/Transaction/transactionCache";
 import { toTransaction } from "@/features/Transactions/utils/transactionMappers";
 import type { Transaction } from "@/features/Transactions/interfaces/Transaction.interface";
+import currencyStore from "@/core/store/currencyStore";
 
 export const PAY_SUBSCRIPTION_DIALOG = "paySubscription";
 
@@ -32,7 +33,7 @@ const buildPaymentTransaction = (subscription: Subscription): Transaction =>
     type: "outcome",
     name: subscription.name,
     amount: subscription.price,
-    currency: subscription.currency ?? "USD",
+    currency: currencyStore.getState().currency,
     date: new Date().toISOString(),
     origin: "subscription",
     subscriptionId: subscription.id,

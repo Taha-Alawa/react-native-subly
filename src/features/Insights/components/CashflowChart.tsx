@@ -2,6 +2,8 @@ import { Pressable, Text, View } from "react-native";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { colors, components } from "@/core/theme/tokens";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrencyShort } from "@/core/utils/formatters";
 import type { CashflowBucket } from "@/features/Insights/utils/insightsCalculations";
 
@@ -37,6 +39,7 @@ const CashflowChart = ({
   periodOutcome,
 }: CashflowChartProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
 
   const barHeight = (value: number) =>
     value <= 0
@@ -59,21 +62,21 @@ const CashflowChart = ({
         </Text>
 
         <View className="chart-head-figures">
-          <Text className="chart-head-figure" numberOfLines={1}>
+          <MoneyText className="chart-head-figure" numberOfLines={1}>
             <Text style={{ color: colors.chartIncome }}>+</Text>
-            {formatCurrencyShort(headingIncome)}
-          </Text>
-          <Text className="chart-head-figure" numberOfLines={1}>
+            {formatCurrencyShort(headingIncome, currency)}
+          </MoneyText>
+          <MoneyText className="chart-head-figure" numberOfLines={1}>
             <Text style={{ color: colors.chartOutcome }}>{"−"}</Text>
-            {formatCurrencyShort(headingOutcome)}
-          </Text>
+            {formatCurrencyShort(headingOutcome, currency)}
+          </MoneyText>
         </View>
       </View>
 
       <View className="chart-scale-row">
-        <Text className="chart-scale-label">
-          {hasData ? formatCurrencyShort(maxValue) : formatCurrencyShort(0)}
-        </Text>
+        <MoneyText className="chart-scale-label">
+          {formatCurrencyShort(hasData ? maxValue : 0, currency)}
+        </MoneyText>
         <View className="chart-scale-rule" />
       </View>
 
@@ -89,8 +92,8 @@ const CashflowChart = ({
               accessibilityRole="button"
               accessibilityLabel={t("dashboard.bucketAccessibility", {
                 period: bucket.fullLabel,
-                income: formatCurrencyShort(bucket.income),
-                outcome: formatCurrencyShort(bucket.outcome),
+                income: formatCurrencyShort(bucket.income, currency),
+                outcome: formatCurrencyShort(bucket.outcome, currency),
                 defaultValue: "{{period}}: {{income}} in, {{outcome}} out",
               })}
             >

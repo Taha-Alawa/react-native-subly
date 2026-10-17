@@ -2,6 +2,8 @@ import { InputAccessoryView, Keyboard, Platform, Pressable, Text, View } from "r
 import { useTranslation } from "react-i18next";
 import TextField from "@/core/components/Form/TextField";
 import SubmitButton from "@/core/components/Form/SubmitButton";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrency } from "@/core/utils/formatters";
 import useBalanceForm from "@/features/Balance/hooks/Balance/useBalanceForm";
 import type { BalanceFormValues } from "@/features/Balance/schemas/Balance/BalanceSchema";
@@ -22,6 +24,7 @@ const BalanceForm = ({
   onSubmit,
 }: BalanceFormProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
   const { values, errors, submitting, setField, handleSubmit } = useBalanceForm({
     seedAmount: startingAmount,
     onSubmit,
@@ -35,19 +38,20 @@ const BalanceForm = ({
         <Text className="calendar-summary-label">
           {t("modal.updateBalance.currentLabel", "Current balance")}
         </Text>
-        <Text className="calendar-summary-value" numberOfLines={1}>
-          {formatCurrency(currentAmount)}
-        </Text>
+        <MoneyText className="calendar-summary-value" numberOfLines={1}>
+          {formatCurrency(currentAmount, currency)}
+        </MoneyText>
         {hasTransactions && (
-          <Text className="auth-helper" numberOfLines={1}>
+          <MoneyText className="auth-helper" numberOfLines={1}>
             {t("modal.updateBalance.breakdown", {
-              starting: formatCurrency(startingAmount),
+              starting: formatCurrency(startingAmount, currency),
               movement: `${transactionsNet > 0 ? "+" : "−"}${formatCurrency(
                 Math.abs(transactionsNet),
+                currency,
               )}`,
               defaultValue: "{{starting}} starting {{movement}} from transactions",
             })}
-          </Text>
+          </MoneyText>
         )}
       </View>
 

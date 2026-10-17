@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { usePostHog } from "posthog-react-native";
 import useLanguageSwitcher from "@/core/hooks/useLanguageSwitcher";
+import { useCurrency } from "@/core/store/currencyStore";
 import authStore from "@/core/store/authStore";
 import dialogStore from "@/core/store/dialogStore";
 import { UPDATE_PROFILE_DIALOG } from "@/features/Settings/hooks/Profile/useProfileDialog";
@@ -13,9 +14,11 @@ export const useSettings = () => {
   const user = authStore.useStore();
   const posthog = usePostHog();
   const { currentLanguage } = useLanguageSwitcher();
+  const currency = useCurrency();
 
   const [signingOut, setSigningOut] = useState(false);
   const [isLanguageDialogOpen, setLanguageDialogOpen] = useState(false);
+  const [isCurrencyDialogOpen, setCurrencyDialogOpen] = useState(false);
 
   const handleSignOut = useCallback(async () => {
     if (signingOut) return;
@@ -49,6 +52,10 @@ export const useSettings = () => {
     isLanguageDialogOpen,
     openLanguageDialog: () => setLanguageDialogOpen(true),
     closeLanguageDialog: () => setLanguageDialogOpen(false),
+    currency,
+    isCurrencyDialogOpen,
+    openCurrencyDialog: () => setCurrencyDialogOpen(true),
+    closeCurrencyDialog: () => setCurrencyDialogOpen(false),
   };
 };
 

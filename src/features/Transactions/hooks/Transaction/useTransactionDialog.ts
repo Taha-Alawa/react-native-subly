@@ -12,6 +12,7 @@ import type {
   Transaction,
   TransactionType,
 } from "@/features/Transactions/interfaces/Transaction.interface";
+import currencyStore from "@/core/store/currencyStore";
 
 export const ADD_TRANSACTION_DIALOG = "addTransaction";
 
@@ -34,7 +35,7 @@ export const buildTransaction = (values: TransactionFormValues): Transaction => 
       type: values.type,
       name,
       amount,
-      currency: "USD",
+      currency: currencyStore.getState().currency,
       date: date.toISOString(),
       origin: "manual",
       iconKey: "wallet",

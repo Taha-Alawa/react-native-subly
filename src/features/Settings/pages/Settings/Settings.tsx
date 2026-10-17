@@ -8,6 +8,7 @@ import LanguageDialog from "@/core/components/Localization/LanguageDialog";
 import { useDirection } from "@/core/components/Localization/LocalizationProvider";
 import useSettings from "@/features/Settings/hooks/useSettings";
 import ProfileDialog from "@/features/Settings/components/Profile/ProfileDialog";
+import CurrencyDialog from "@/features/Settings/components/Currency/CurrencyDialog";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
@@ -26,6 +27,10 @@ const Settings = () => {
     isLanguageDialogOpen,
     openLanguageDialog,
     closeLanguageDialog,
+    currency,
+    isCurrencyDialogOpen,
+    openCurrencyDialog,
+    closeCurrencyDialog,
   } = useSettings();
 
   return (
@@ -80,6 +85,18 @@ const Settings = () => {
             </Text>
           </View>
         </Pressable>
+
+        <Pressable className="settings-row" onPress={openCurrencyDialog}>
+          <Text className="settings-row-label">
+            {t("settings.currency", "Currency")}
+          </Text>
+          <View className="settings-row-value-group">
+            <Text className="settings-row-value">{currency}</Text>
+            <Text className="settings-row-chevron">
+              {direction.forwardGlyph}
+            </Text>
+          </View>
+        </Pressable>
       </View>
 
       <Pressable
@@ -98,6 +115,10 @@ const Settings = () => {
       <LanguageDialog
         visible={isLanguageDialogOpen}
         onClose={closeLanguageDialog}
+      />
+      <CurrencyDialog
+        visible={isCurrencyDialogOpen}
+        onClose={closeCurrencyDialog}
       />
     </SafeAreaView>
   );

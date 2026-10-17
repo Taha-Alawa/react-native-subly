@@ -2,6 +2,8 @@ import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { colors } from "@/core/theme/tokens";
 import EmptyState from "@/core/components/Feedback/EmptyState";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrencyShort } from "@/core/utils/formatters";
 import type { SpendingEntry } from "@/features/Insights/utils/insightsCalculations";
 
@@ -18,6 +20,7 @@ export type TopSpendingListProps = {
  */
 const TopSpendingList = ({ entries }: TopSpendingListProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
 
   if (!entries.length) {
     return (
@@ -37,9 +40,9 @@ const TopSpendingList = ({ entries }: TopSpendingListProps) => {
             <Text className="breakdown-name" numberOfLines={1}>
               {entry.name}
             </Text>
-            <Text className="breakdown-value" numberOfLines={1}>
-              {formatCurrencyShort(entry.total)}
-            </Text>
+            <MoneyText className="breakdown-value" numberOfLines={1}>
+              {formatCurrencyShort(entry.total, currency)}
+            </MoneyText>
           </View>
 
           <View className="breakdown-track">

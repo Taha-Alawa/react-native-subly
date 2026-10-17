@@ -10,6 +10,7 @@ import { CATEGORY_COLORS } from "@/features/Subscriptions/constants/subscription
 import { toSubscription } from "@/features/Subscriptions/utils/subscriptionMappers";
 import type { SubscriptionFormValues } from "@/features/Subscriptions/schemas/Subscription/SubscriptionSchema";
 import type { Subscription } from "@/features/Subscriptions/interfaces/Subscription.interface";
+import currencyStore from "@/core/store/currencyStore";
 
 export const ADD_SUBSCRIPTION_DIALOG = "addSubscription";
 export const UPDATE_SUBSCRIPTION_DIALOG = "updateSubscription";
@@ -45,7 +46,7 @@ const buildSubscription = (
       status: existing?.status ?? "active",
       startDate: startDate.toISOString(),
       price,
-      currency: existing?.currency ?? "USD",
+      currency: existing?.currency ?? currencyStore.getState().currency,
       billing: values.frequency,
       frequency: values.frequency,
       renewalDate: renewalDate.toISOString(),

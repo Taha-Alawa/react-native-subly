@@ -3,6 +3,8 @@ import clsx from "clsx";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { iconTint } from "@/core/constants/icons";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrency } from "@/core/utils/formatters";
 import type { Transaction } from "@/features/Transactions/interfaces/Transaction.interface";
 
@@ -17,7 +19,8 @@ export type TransactionCardProps = {
  */
 const TransactionCard = ({ transaction, onLongPress }: TransactionCardProps) => {
   const { t } = useTranslation();
-  const { type, name, amount, currency, date, origin, icon, iconKey } =
+  const currency = useCurrency();
+  const { type, name, amount, date, origin, icon, iconKey } =
     transaction;
 
   const isIncome = type === "income";
@@ -68,7 +71,7 @@ const TransactionCard = ({ transaction, onLongPress }: TransactionCardProps) => 
       </View>
 
       <View className="tx-item-amount-box">
-        <Text
+        <MoneyText
           className={clsx(
             "tx-item-amount",
             isIncome ? "tx-item-amount-income" : "tx-item-amount-outcome",
@@ -77,7 +80,7 @@ const TransactionCard = ({ transaction, onLongPress }: TransactionCardProps) => 
         >
           {isIncome ? "+" : "−"}
           {formatCurrency(amount, currency)}
-        </Text>
+        </MoneyText>
         <Text className="tx-item-tag" numberOfLines={1}>
           {isSubscription
             ? t("transactions.subscriptionTag", "Subscription")
