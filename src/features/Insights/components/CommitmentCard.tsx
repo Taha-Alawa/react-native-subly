@@ -1,6 +1,8 @@
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { colors } from "@/core/theme/tokens";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrencyShort } from "@/core/utils/formatters";
 import type {
   Commitment,
@@ -22,6 +24,7 @@ export type CommitmentCardProps = {
  */
 const CommitmentCard = ({ commitment, period }: CommitmentCardProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
 
   const progress =
     commitment.committed > 0
@@ -45,9 +48,9 @@ const CommitmentCard = ({ commitment, period }: CommitmentCardProps) => {
           </Text>
         </View>
 
-        <Text className="stat-hero-value" numberOfLines={1}>
-          {formatCurrencyShort(commitment.committed)}
-        </Text>
+        <MoneyText className="stat-hero-value" numberOfLines={1}>
+          {formatCurrencyShort(commitment.committed, currency)}
+        </MoneyText>
       </View>
 
       <View className="commitment-track">
@@ -62,18 +65,18 @@ const CommitmentCard = ({ commitment, period }: CommitmentCardProps) => {
           <Text className="stat-row-label" numberOfLines={1}>
             {t("dashboard.paidSoFar", "Paid in this period")}
           </Text>
-          <Text className="stat-row-value" numberOfLines={1}>
-            {formatCurrencyShort(commitment.paid)}
-          </Text>
+          <MoneyText className="stat-row-value" numberOfLines={1}>
+            {formatCurrencyShort(commitment.paid, currency)}
+          </MoneyText>
         </View>
 
         <View className="stat-row">
           <Text className="stat-row-label" numberOfLines={1}>
             {t("dashboard.stillToCome", "Still to come")}
           </Text>
-          <Text className="stat-row-value" numberOfLines={1}>
-            {formatCurrencyShort(commitment.remaining)}
-          </Text>
+          <MoneyText className="stat-row-value" numberOfLines={1}>
+            {formatCurrencyShort(commitment.remaining, currency)}
+          </MoneyText>
         </View>
       </View>
 

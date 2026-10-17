@@ -1,6 +1,8 @@
 import { Text, View } from "react-native";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrencyShort } from "@/core/utils/formatters";
 import type { TransactionTotals } from "@/features/Transactions/interfaces/Transaction.interface";
 
@@ -18,6 +20,7 @@ export type TransactionTotalsCardProps = {
  */
 const TransactionTotalsCard = ({ totals }: TransactionTotalsCardProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
   const isPositive = totals.net >= 0;
 
   return (
@@ -26,7 +29,7 @@ const TransactionTotalsCard = ({ totals }: TransactionTotalsCardProps) => {
         <Text className="tx-totals-title">
           {t("transactions.totalsTitle", "Totals")}
         </Text>
-        <Text
+        <MoneyText
           className={clsx(
             "tx-totals-net",
             isPositive ? "tx-total-value-income" : "tx-total-value-outcome",
@@ -34,8 +37,8 @@ const TransactionTotalsCard = ({ totals }: TransactionTotalsCardProps) => {
           numberOfLines={1}
         >
           {isPositive ? "+" : "−"}
-          {formatCurrencyShort(Math.abs(totals.net))}
-        </Text>
+          {formatCurrencyShort(Math.abs(totals.net), currency)}
+        </MoneyText>
       </View>
 
       <View className="tx-totals-row">
@@ -43,42 +46,42 @@ const TransactionTotalsCard = ({ totals }: TransactionTotalsCardProps) => {
           <Text className="tx-total-label" numberOfLines={1}>
             {t("transactions.totalIncome", "Income")}
           </Text>
-          <Text
+          <MoneyText
             className="tx-total-value tx-total-value-income"
             numberOfLines={1}
             adjustsFontSizeToFit
             minimumFontScale={0.85}
           >
-            {formatCurrencyShort(totals.income)}
-          </Text>
+            {formatCurrencyShort(totals.income, currency)}
+          </MoneyText>
         </View>
 
         <View className="tx-total-tile">
           <Text className="tx-total-label" numberOfLines={1}>
             {t("transactions.totalOutcome", "Expenses")}
           </Text>
-          <Text
+          <MoneyText
             className="tx-total-value tx-total-value-outcome"
             numberOfLines={1}
             adjustsFontSizeToFit
             minimumFontScale={0.85}
           >
-            {formatCurrencyShort(totals.outcome)}
-          </Text>
+            {formatCurrencyShort(totals.outcome, currency)}
+          </MoneyText>
         </View>
 
         <View className="tx-total-tile">
           <Text className="tx-total-label" numberOfLines={1}>
             {t("transactions.totalSubscriptions", "Subs")}
           </Text>
-          <Text
+          <MoneyText
             className="tx-total-value tx-total-value-neutral"
             numberOfLines={1}
             adjustsFontSizeToFit
             minimumFontScale={0.85}
           >
-            {formatCurrencyShort(totals.subscriptions)}
-          </Text>
+            {formatCurrencyShort(totals.subscriptions, currency)}
+          </MoneyText>
           <Text className="tx-total-caption" numberOfLines={1}>
             {t("transactions.ofOutcome", "of expenses")}
           </Text>

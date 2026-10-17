@@ -1,6 +1,8 @@
 import { Text, View } from "react-native";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrencyShort } from "@/core/utils/formatters";
 import type {
   PeriodAverages,
@@ -21,6 +23,7 @@ export type AveragesCardProps = {
  */
 const AveragesCard = ({ averages, period }: AveragesCardProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
   const isYear = period.mode === "year";
 
   const perLabel = isYear
@@ -62,18 +65,18 @@ const AveragesCard = ({ averages, period }: AveragesCardProps) => {
           <Text className="stat-row-label" numberOfLines={1}>
             {t("dashboard.avgIncome", "Average income")}
           </Text>
-          <Text className="stat-row-value" numberOfLines={1}>
-            {formatCurrencyShort(averages.averageIncome)} {perLabel}
-          </Text>
+          <MoneyText className="stat-row-value" numberOfLines={1}>
+            {formatCurrencyShort(averages.averageIncome, currency)} {perLabel}
+          </MoneyText>
         </View>
 
         <View className="stat-row">
           <Text className="stat-row-label" numberOfLines={1}>
             {t("dashboard.avgOutcome", "Average expenses")}
           </Text>
-          <Text className="stat-row-value" numberOfLines={1}>
-            {formatCurrencyShort(averages.averageOutcome)} {perLabel}
-          </Text>
+          <MoneyText className="stat-row-value" numberOfLines={1}>
+            {formatCurrencyShort(averages.averageOutcome, currency)} {perLabel}
+          </MoneyText>
         </View>
 
         {averages.best && (
@@ -84,10 +87,10 @@ const AveragesCard = ({ averages, period }: AveragesCardProps) => {
             <Text className="stat-row-value" numberOfLines={2}>
               {averages.best.fullLabel}
               {"  "}
-              <Text className="summary-value-good">
+              <MoneyText className="summary-value-good">
                 {averages.best.net >= 0 ? "+" : "−"}
-                {formatCurrencyShort(Math.abs(averages.best.net))}
-              </Text>
+                {formatCurrencyShort(Math.abs(averages.best.net), currency)}
+              </MoneyText>
             </Text>
           </View>
         )}
@@ -100,10 +103,10 @@ const AveragesCard = ({ averages, period }: AveragesCardProps) => {
             <Text className="stat-row-value" numberOfLines={2}>
               {averages.worst.fullLabel}
               {"  "}
-              <Text className="summary-value-bad">
+              <MoneyText className="summary-value-bad">
                 {averages.worst.net >= 0 ? "+" : "−"}
-                {formatCurrencyShort(Math.abs(averages.worst.net))}
-              </Text>
+                {formatCurrencyShort(Math.abs(averages.worst.net), currency)}
+              </MoneyText>
             </Text>
           </View>
         )}

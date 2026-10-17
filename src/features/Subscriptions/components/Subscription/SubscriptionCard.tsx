@@ -2,6 +2,8 @@ import { Image, Pressable, Text, View } from "react-native";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { iconTint } from "@/core/constants/icons";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrency, formatDate } from "@/core/utils/formatters";
 import {
   formatRenewalCycle,
@@ -29,10 +31,10 @@ const SubscriptionCard = ({
   variant = "detailed",
 }: SubscriptionCardProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
   const {
     name,
     price,
-    currency,
     icon,
     iconKey,
     billing,
@@ -84,9 +86,9 @@ const SubscriptionCard = ({
           </View>
         </View>
         <View className="sub-price-box">
-          <Text className="sub-price" numberOfLines={1}>
+          <MoneyText className="sub-price" numberOfLines={1}>
             {formatCurrency(price, currency)}
-          </Text>
+          </MoneyText>
           <Text className="sub-billing" numberOfLines={1}>
             {isManageVariant ? formatRenewalCycle(renewalDate) : billing}
           </Text>

@@ -2,6 +2,8 @@ import { Image, Pressable, Text, View } from "react-native";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { iconTint } from "@/core/constants/icons";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrency } from "@/core/utils/formatters";
 import type { UpcomingSubscription } from "@/features/Subscriptions/interfaces/Subscription.interface";
 
@@ -15,7 +17,8 @@ const UpcomingSubscriptionCard = ({
   onPay,
 }: UpcomingSubscriptionCardProps) => {
   const { t } = useTranslation();
-  const { name, price, currency, daysLeft, icon, iconKey, isOverdue, isPayable } =
+  const currency = useCurrency();
+  const { name, price, daysLeft, icon, iconKey, isOverdue, isPayable } =
     subscription;
 
   const timing = isOverdue
@@ -38,9 +41,9 @@ const UpcomingSubscriptionCard = ({
         {/* min-w-0 + flex-1 lets this column shrink instead of overflowing the
             card — Arabic renders these strings far wider than English. */}
         <View className="upcoming-copy">
-          <Text className="upcoming-price" numberOfLines={1}>
+          <MoneyText className="upcoming-price" numberOfLines={1}>
             {formatCurrency(price, currency)}
-          </Text>
+          </MoneyText>
           <Text
             className={clsx(
               "upcoming-meta",

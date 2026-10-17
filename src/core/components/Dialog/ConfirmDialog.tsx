@@ -2,6 +2,7 @@ import { Pressable, Text, View } from "react-native";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import DialogShell from "@/core/components/Dialog/DialogShell";
+import MoneyText from "@/core/components/Money/MoneyText";
 
 export type ConfirmTone = "neutral" | "success" | "warn" | "danger";
 
@@ -59,13 +60,14 @@ const ConfirmDialog = ({
           // A View, not a styled Text: React Native centres a glyph with flex,
           // not with lineHeight — which pushed it out of the badge entirely.
           <View className={clsx("confirm-badge", BADGE_TONE[tone])}>
-            <Text className={clsx("confirm-glyph", GLYPH_TONE[tone])}>
+            <MoneyText className={clsx("confirm-glyph", GLYPH_TONE[tone])}>
               {glyph}
-            </Text>
+            </MoneyText>
           </View>
         ) : null}
 
-        <Text className="confirm-message">{message}</Text>
+        {/* Messages often carry a formatted amount — MoneyText keeps its sign. */}
+        <MoneyText className="confirm-message">{message}</MoneyText>
       </View>
 
       <View className="confirm-actions">

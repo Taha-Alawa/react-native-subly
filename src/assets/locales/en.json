@@ -157,7 +157,9 @@
     "restartMessage": "Restart the app to fully apply the new layout direction.",
     "profile": "Profile",
     "editProfile": "Edit profile",
-    "addUsername": "Add a username"
+    "addUsername": "Add a username",
+    "currency": "Currency",
+    "chooseCurrency": "Choose currency"
   },
   "modal": {
     "createSubscription": {
@@ -364,5 +366,18 @@
       "goToTransactions": "View transactions",
       "goToSubscriptions": "View subscriptions"
     }
+  },
+  "currencies": {
+    "SAR": "Saudi Riyal",
+    "USD": "US Dollar",
+    "EUR": "Euro",
+    "GBP": "British Pound",
+    "AED": "UAE Dirham",
+    "KWD": "Kuwaiti Dinar",
+    "QAR": "Qatari Riyal",
+    "BHD": "Bahraini Dinar",
+    "OMR": "Omani Rial",
+    "EGP": "Egyptian Pound",
+    "JOD": "Jordanian Dinar"
   }
 }

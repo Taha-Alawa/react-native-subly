@@ -2,6 +2,8 @@ import { Text, View } from "react-native";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { colors } from "@/core/theme/tokens";
+import MoneyText from "@/core/components/Money/MoneyText";
+import { useCurrency } from "@/core/store/currencyStore";
 import { formatCurrencyShort } from "@/core/utils/formatters";
 import type { TransactionTotals } from "@/features/Transactions/interfaces/Transaction.interface";
 
@@ -16,6 +18,7 @@ export type SummaryTilesProps = {
  */
 const SummaryTiles = ({ totals }: SummaryTilesProps) => {
   const { t } = useTranslation();
+  const currency = useCurrency();
   const saved = totals.net;
 
   return (
@@ -25,30 +28,30 @@ const SummaryTiles = ({ totals }: SummaryTilesProps) => {
           <Text className="summary-label" numberOfLines={1}>
             {t("dashboard.income", "Income")}
           </Text>
-          <Text
+          <MoneyText
             className="summary-value"
             style={{ color: colors.chartIncome }}
             numberOfLines={1}
             adjustsFontSizeToFit
             minimumFontScale={0.85}
           >
-            {formatCurrencyShort(totals.income)}
-          </Text>
+            {formatCurrencyShort(totals.income, currency)}
+          </MoneyText>
         </View>
 
         <View className="summary-tile">
           <Text className="summary-label" numberOfLines={1}>
             {t("dashboard.outcome", "Expenses")}
           </Text>
-          <Text
+          <MoneyText
             className="summary-value"
             style={{ color: colors.chartOutcome }}
             numberOfLines={1}
             adjustsFontSizeToFit
             minimumFontScale={0.85}
           >
-            {formatCurrencyShort(totals.outcome)}
-          </Text>
+            {formatCurrencyShort(totals.outcome, currency)}
+          </MoneyText>
         </View>
       </View>
 
@@ -57,14 +60,14 @@ const SummaryTiles = ({ totals }: SummaryTilesProps) => {
           <Text className="summary-label" numberOfLines={1}>
             {t("dashboard.subscriptions", "Subscriptions")}
           </Text>
-          <Text
+          <MoneyText
             className="summary-value summary-value-neutral"
             numberOfLines={1}
             adjustsFontSizeToFit
             minimumFontScale={0.85}
           >
-            {formatCurrencyShort(totals.subscriptions)}
-          </Text>
+            {formatCurrencyShort(totals.subscriptions, currency)}
+          </MoneyText>
           <Text className="summary-caption" numberOfLines={1}>
             {t("dashboard.ofOutcome", "of expenses")}
           </Text>
@@ -76,7 +79,7 @@ const SummaryTiles = ({ totals }: SummaryTilesProps) => {
               ? t("dashboard.saved", "Saved")
               : t("dashboard.overspent", "Overspent")}
           </Text>
-          <Text
+          <MoneyText
             className={clsx(
               "summary-value",
               saved >= 0 ? "summary-value-good" : "summary-value-bad",
@@ -85,8 +88,8 @@ const SummaryTiles = ({ totals }: SummaryTilesProps) => {
             adjustsFontSizeToFit
             minimumFontScale={0.85}
           >
-            {formatCurrencyShort(Math.abs(saved))}
-          </Text>
+            {formatCurrencyShort(Math.abs(saved), currency)}
+          </MoneyText>
         </View>
       </View>
     </View>
