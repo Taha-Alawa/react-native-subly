@@ -1,50 +1,99 @@
-# Welcome to your Expo app 👋
+<div align="center">
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<img src="src/assets/images/icon.png" width="96" alt="Subly logo" />
 
-## Get started
+# Subly
 
-1. Install dependencies
+**Track your subscriptions, income and expenses, all in one place.**
+
+Built with React Native and Expo · English & Arabic · iOS, Android and Web
+
+</div>
+
+---
+
+## What it does
+
+- **Balance at a glance:** your total balance updates with every transaction.
+- **Subscriptions:** add Netflix, Spotify, Figma and others with a price, billing cycle and category.
+- **Never miss a renewal:** upcoming payments are shown on the home screen, and one tap records the payment and moves the renewal date.
+- **Transactions:** log income and expenses, browse them month by month, and see the totals.
+- **Dashboard:** yearly and monthly charts, savings rate, top spending categories, and what your subscriptions cost per year.
+- **Arabic & English:** full right-to-left layout for Arabic.
+- **Currencies:** choose your currency in Settings, including the new Saudi Riyal sign.
+
+## Screenshots
+
+| Home | Subscriptions | Transactions | Dashboard |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/screenshots/home.jpeg" width="200" /> | <img src="docs/screenshots/subscriptions.jpeg" width="200" /> | <img src="docs/screenshots/transactions.jpeg" width="200" /> | <img src="docs/screenshots/dashboard.jpeg" width="200" /> |
+
+| Pay a subscription | Payment recorded | Top spending | Yearly subscription cost |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/screenshots/pay-subscription.jpeg" width="200" /> | <img src="docs/screenshots/payment-success.jpeg" width="200" /> | <img src="docs/screenshots/dashboard-spending.jpeg" width="200" /> | <img src="docs/screenshots/dashboard-subscriptions.jpeg" width="200" /> |
+
+### Demo video
+
+▶️ [Watch the demo](docs/demo.mp4)
+
+## Tech stack
+
+| | |
+| --- | --- |
+| App | [Expo](https://expo.dev) SDK 57, React Native, Expo Router |
+| Styling | NativeWind (Tailwind CSS) |
+| Backend | Firebase Auth + Firestore |
+| Languages | i18next (English / Arabic, RTL) |
+| Analytics | PostHog |
+
+## Run it locally
+
+1. **Install the dependencies**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. **Create a `.env` file** in the project root with your Firebase web app config (Firebase console → Project settings → Your apps):
+
+   ```env
+   EXPO_PUBLIC_FIREBASE_API_KEY=
+   EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=
+   EXPO_PUBLIC_FIREBASE_PROJECT_ID=
+   EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=
+   EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+   EXPO_PUBLIC_FIREBASE_APP_ID=
+
+   # Optional: analytics
+   POSTHOG_PROJECT_TOKEN=
+   POSTHOG_HOST=
+   ```
+
+3. **Start the app**
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+   Scan the QR code with **Expo Go** on your phone, or press `w` to open it in the browser.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Project structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+src/
+├── app/        # Screens and routes (Expo Router)
+├── features/   # One folder per feature: Auth, Home, Subscriptions,
+│               # Transactions, Insights, Balance, Settings
+├── core/       # Shared components, hooks, stores, i18n, theme, utils
+├── layouts/    # Root, auth and tab layouts
+└── assets/     # Fonts, icons, images, translations
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Useful scripts
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+| Command | What it does |
+| --- | --- |
+| `npm start` | Start the dev server |
+| `npm run typecheck` | Check TypeScript types |
+| `npm run lint` | Run ESLint |
+| `npm run locales:audit` | Find missing or unused translation keys |
